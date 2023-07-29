@@ -1,3 +1,19 @@
+
+
+#### flask安装成功验证：
+
+cmd中输入
+
+`python`
+
+`import flask`
+
+`flask.__version__#注意前后都有两个下划线`
+
+此时会输出`'2.2.5'`类似的字符
+
+
+
 #### MTV模型
 
 [Django的框架模式——MTV - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/362268440)
@@ -43,20 +59,6 @@ localhost等同于127.0.0.1
 ​		【注意】在生产环境下不要开启调试模式，即
 
 
-
-#### flask安装错误解决
-
-1.flask安装成功验证：
-
-cmd中输入
-
-`python`
-
-`import flask`
-
-`flask.__version__#注意前后都有两个下划线`
-
-此时会输出`'2.2.5'`类似的字符
 
 
 
@@ -158,7 +160,7 @@ ftp——文件传输协议
 
 
 
-#### 请求-响应
+#### 请求
 
 ​	【运行过程】
 
@@ -243,55 +245,43 @@ headers:HTTP请求头
 
 ​			（2）解析请求头中的ip地址
 
+​				首先获取ip地址
+
+![image-20230728093727821](C:\Users\41001\AppData\Roaming\Typora\typora-user-images\image-20230728093727821.png)
+
+进入指定网页后有：
+
+![image-20230728093810907](C:\Users\41001\AppData\Roaming\Typora\typora-user-images\image-20230728093810907.png)
+
+这个host指的是服务器所在主机的地址，并不是网页的ip地址
+
+也可以用语句`print(headers.get('host'))`加以验证
+
+获取ip地址：`ip=request.remote_addr`
 
 
 
+###### 请求钩子
+
+如下场景如何实现？——通过请求钩子
+
+<1>每个请求中都要验证用户信息（是否已登录、海量 有权限访问）
+
+<2>限制来着某些IP的恶意请求
+
+【作用】可以减少重复代码的编写，便于维护
+
+`before_first_request # 服务器初始化后第一个请求到达前执行`
+
+`before_request # 每一个请求到达前执行`
+
+![image-20230728100634241](C:\Users\41001\AppData\Roaming\Typora\typora-user-images\image-20230728100634241.png)
 
 
 
+`after_request # 每次请求处理完成后执行，如果请求过程中产生了异常，则不执行`
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+`teardown_request # 每次请求处理完成之后执行，如果请求过程中产生了异 常也执行`
 
 
 
