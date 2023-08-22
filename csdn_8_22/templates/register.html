@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% from 'macro/form_errors.html' import form_field_errors %}
+{% block title %}{{ super() }}注册{% endblock %}
+{% block header %}
+  <link rel="stylesheet" href="./assets/style/login.css">
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1658093_nokjvsp8hws.css">
+{% endblock %}
+{% block layout %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        {# 展示flash消息 #}
+        {% include 'components/flash_messages.html' %}
+
+        <!-- 表单登录 ——界面 -->
+          <!-- 创建一个注册表单，并将表单提交数据发送到 `accounts.register` 视图函数进行处理 -->
+        <form class="login-form box-wrap" method="POST"
+              action="{{ './register' }}">
+            <div>
+            <img src="assets/register.png">
+          </div>
+          {{ form.csrf_token }}<!--用于在 HTML 表单中插入 CSRF 令牌,防恶意请求-->
+          <div class="form-group">
+            <label for="id-user-name">用户名</label>
+            {{ form.username }}
+              <!--<input type="email" class="form-control input-lg" id="id-user-n ame"placeholder="用户名">-->
+          </div>
+          {{ form_field_errors(form.username.errors) }}
+          <div class="form-group">
+            <label for="id-nick-name">昵称</label>
+            {{ form.nickname }}
+          </div>
+          {{ form_field_errors(form.nickname.errors) }}
+          <div class="form-group">
+            <label for="id-password">密码</label>
+            {{ form.password }}
+          </div>
+          {{ form_field_errors(form.password.errors) }}
+          <div class="form-group">
+            <label for="id-confirm-password">确认密码</label>
+            {{ form.confirm_password }}
+          </div>
+          {{ form_field_errors(form.confirm_password.errors) }}
+          <div class="form-group">
+            <button type="submit" class="btn btn-info btn-block btn-lg">注册</button>
+
+
+          </div>
+          <p class="desc">未注册手机验证后自动登录<br/>
+            注册即代表同意《用户使用协议》《隐私保护指引》</p>
+          <p class="text-right">已有账号，<a href="{{ url_for('accounts.login') }}">点击登录</a></p>
+        </form>
+        <!-- //表单登录 -->
+        <!-- 社交账号登录 -->
+        <div class="login-social box-wrap">
+             <img src="assets/register_other.png">
+        </div>
+        <!-- //社交账号登录 -->
+        <!-- 页脚 -->
+        <div class="login-footer">
+          <a href="">关于我们</a>
+          <a href="">联系我们</a>
+          <a href="">注册机构</a>
+          <a href="">专栏</a>
+          <br>
+          <a href="">京ICP 备1000000012号</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
