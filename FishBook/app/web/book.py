@@ -1,4 +1,7 @@
+import json
+
 from app.forms.book import SearchForm
+from view_models.book import BookCollection
 
 from . import web
 from flask import jsonify, request
@@ -18,15 +21,22 @@ def serch():
     # page = request.args['page']
 
     # 校验
-    form=SearchForm(request.args)
+    form=SearchForm(request.args)# 取参数
+    books=BookCollection()#保存多条数据结果
     if form.validate():
         q=form.q.data.strip()
         page = form.page.data# 去掉q参数前后的空格
         isbn_or_key = is_isbn_or_key(q)
+        yushu_book=YuShuBook()
         if isbn_or_key == 'isbn':
-            result = YuShuBook.search_by_isbn(q)
+             yushu_book.search_by_isbn(q)
         else:
-            result = YuShuBook.search_by_keyword(q,page)
+             yushu_book.search_by_keyword(q,page)
+        books.fill(yushu_book,q)
+
+        #return jsonify(books.__dict__)# 由于books对象了里包含另一个对象，因此不能直接序列化
+        return json.dumps(books,default=lambda o: o.__dict__)#序列化含有对象的对象
+
         #三种返回方式（api）：
         # return result#这种返回结果其实也可以
         #视图函数最后返回的需要为字符串格式，而result是字典类型（因为HTTP.get(url)返回的就是字典），因此result要序列化
